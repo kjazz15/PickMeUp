@@ -4,15 +4,6 @@ import tornado.ioloop
 import tornado.web
 import tornado.auth
 import tornadio2
-import pymongo
-import hashlib
-import random
-from datetime import datetime
-from metatoe import *
-import pickle
-
-import smtplib
-from email.MIMEText import MIMEText
 
 from tornado.options import define, options
 from tornado.escape import json_encode, json_decode
@@ -25,8 +16,6 @@ define("debug", default=1, help="debug mode", type=int)
 
 class Application(tornado.web.Application):
     def __init__(self):
-        conn = pymongo.Connection("localhost", 27017)
-        self.db = conn['242fp']
 
         if options.debug == 0:
             options.debug = False
