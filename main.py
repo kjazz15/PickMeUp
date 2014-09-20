@@ -5,7 +5,7 @@ import tornado.web
  
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
-        self.write("Hello world")
+        self.render("index.html")
  
 def main():
     application = tornado.web.Application([
@@ -18,3 +18,4 @@ def main():
  
 if __name__ == "__main__":
     main()
+
