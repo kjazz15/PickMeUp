@@ -1,1 +1,1 @@
-web: python pickmeupapp/app.py
+web: python main.py
