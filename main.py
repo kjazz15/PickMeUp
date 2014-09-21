@@ -2,6 +2,9 @@ import os
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
+from sadness import SadnessFactory
+
+
  
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
@@ -11,9 +14,10 @@ class MainHandler(tornado.web.RequestHandler):
         zipcode = self.get_argument('zipcode')
         body = self.get_argument('body')
         number = self.get_argument('number')
-        self.write(zipcode+body+number)
+        self.write(SF.process_text(number, body, zipcode))
  
 def main():
+    SF = SadnessFactory() 
     application = tornado.web.Application([
         (r"/", MainHandler),
         (r'/static/(.*)', tornado.web.StaticFileHandler, {'path': os.path.join(os.path.dirname(__file__), 'static')}),
@@ -25,3 +29,4 @@ def main():
  
 if __name__ == "__main__":
     main()
+
