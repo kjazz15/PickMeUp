@@ -11,6 +11,7 @@ class MainHandler(tornado.web.RequestHandler):
         zipcode = self.get_argument('zipcode')
         body = self.get_argument('body')
         number = self.get_argument('number')
+        self.write(zipcode+body+number)
  
 def main():
     application = tornado.web.Application([
