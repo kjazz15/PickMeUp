@@ -6,6 +6,11 @@ import tornado.web
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
         self.render("templates/index.html")
+
+    def post(self):
+        zipcode = self.get_argument('zipcode')
+        body = self.get_argument('body')
+        number = self.get_argument('number')
  
 def main():
     application = tornado.web.Application([
