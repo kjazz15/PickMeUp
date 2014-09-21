@@ -17,7 +17,7 @@ def get_venue(zipcode, radius=25, api_key=jambase_api):
 	viable_events = []
 	for item in events:
 		date = datetime.strptime(item['Date'], '%Y-%m-%dT%H:%M:%S')
-		if (date - current_time).total_seconds() < 86300.0 and (date - current_time).total_seconds() >= 0.0:
+		if (date - current_time).total_seconds() < 186300.0 and (date - current_time).total_seconds() >= 0.0:
 			viable_events.append(item)
 	return random.choice(viable_events)
 
