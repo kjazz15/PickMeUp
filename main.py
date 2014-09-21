@@ -2,20 +2,58 @@ import os
 import tornado.httpserver
 import tornado.ioloop
 import tornado.web
- 
-class MainHandler(tornado.web.RequestHandler):
+import tornado.auth
+import tornadio2
+
+from tornado.options import define, options
+from tornado.escape import json_encode, json_decode
+from tornado.web import HTTPError
+
+define("address", default="", help="run on the given address", type=str)
+define("port", default=8080, help="run on the given port", type=int)
+define("debug", default=1, help="debug mode", type=int)
+
+
+class Application(tornado.web.Application):
+    def __init__(self):
+        if options.debug == 0:
+            options.debug = False
+        else:
+            options.debug = True
+
+        # Will need login_url for settings
+        settings = dict(
+            template_path = os.path.join(os.path.dirname(__file__), "templates"),
+            static_path = os.path.join(os.path.dirname(__file__), "static"),
+            socket_io_port = options.port,
+            socket_io_address = options.address,
+            debug = options.debug
+        )
+        print settings
+
+        handlers = [
+            (r"/", IndexHandler),
+            (r"/favicon.ico", tornado.web.StaticFileHandler, dict(path=settings['static_path'])),
+   
+        ]
+
+        tornado.web.Application.__init__(self, handlers, **settings)
+
+class BaseHandler(tornado.web.RequestHandler):
+    pass
+
+class IndexHandler(BaseHandler):
     def get(self):
         self.render("index.html")
- 
+
+
+#Set up webserver and create admin account 'KAM'
 def main():
-    application = tornado.web.Application([
-        (r"/", MainHandler),
-    ])
-    http_server = tornado.httpserver.HTTPServer(application)
-    port = int(os.environ.get("PORT", 5000))
-    http_server.listen(port)
-    tornado.ioloop.IOLoop.instance().start()
- 
+    tornado.options.parse_command_line()
+    application = Application()
+
+    tornadio2.server.SocketServer(application)
+
 if __name__ == "__main__":
     main()
 
