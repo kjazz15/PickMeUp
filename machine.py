@@ -42,6 +42,10 @@ def tokenize(text):
 def save_classifier(current_classifier, filename='data/classifier1'):
 	with open(filename, 'wb') as f:
 		pickle.dump(current_classifier, f)
+
+def open_classifier(filename='data/classifier1'):
+	with open(filename, 'rb') as f:
+		return pickle.load(f)
 class Machine:
 	def __init__(self):
 		self.x = []
@@ -80,13 +84,11 @@ class Machine:
 			
 if __name__ == "__main__": 
     man = Machine() 
-    man.make_classifier()
-    save_classifier(man.classifier)
-    y_true = man.y_t
-    y_classified = man.predict(man.y_t)
+    classifier = open_classifier()
+    x_test, y_test = man.get_data('test')
+    y_classified = classifier.predict(x_test)
+    print max(classifier.predict_proba(['i fucking hate you']).toarray())
+    print max(classifier.predict_proba(['but i love you']).toarray())
+    print max(classifier.predict_proba(['i really hate keagan']).toarray())
 
-    print man.classifier.predict(['i fucking hate you'])
-    print man.classifier.predict(['but i love you'])
-    print man.classifier.predict(['i really hate keagan'])
-
-    print accuracy_score(y_true, y_classified)
+    print accuracy_score(y_test, y_classified)
